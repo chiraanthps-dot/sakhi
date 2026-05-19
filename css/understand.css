@@ -1,0 +1,270 @@
+/* SAKHI — Understand Your Body (understand.css) */
+
+.edu-page {
+  background: var(--clr-bg);
+}
+
+/* Hero mini */
+.edu-hero {
+  position: relative;
+  padding: 140px 0 var(--space-3xl);
+  text-align: center;
+  background: linear-gradient(160deg, hsl(330, 30%, 97%), hsl(270, 25%, 93%));
+  overflow: hidden;
+}
+
+.edu-hero h1 {
+  font-size: var(--fs-h1);
+  margin-bottom: var(--space-sm);
+}
+
+.edu-hero p {
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* Section nav dots */
+.edu-nav-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edu-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--clr-primary-light);
+  background: transparent;
+  transition: background var(--tr-fast), transform var(--tr-fast);
+  cursor: pointer;
+}
+
+.edu-dot.active {
+  background: var(--clr-primary);
+  transform: scale(1.3);
+}
+
+/* Content sections */
+.edu-section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+}
+
+.edu-section:nth-child(even) {
+  background: var(--clr-bg-alt);
+}
+
+.edu-section-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* What is PCOS */
+.pcos-explain {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+.pcos-explain-text h2 {
+  margin-bottom: var(--space-md);
+}
+
+.pcos-explain-text .lead {
+  font-size: 1.1rem;
+  color: var(--clr-text);
+  line-height: 1.8;
+  border-left: 3px solid var(--clr-primary);
+  padding-left: var(--space-lg);
+}
+
+.pcos-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.pcos-visual img {
+  max-width: 340px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Flow diagram */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+}
+
+.flow-step {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--clr-primary);
+  font-weight: 700;
+}
+
+/* Symptoms grid */
+.symptoms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.symptom-card {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.symptom-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+.symptom-card h4 {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+/* Tips 3-col */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.tip-column h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+  font-size: var(--fs-h3);
+}
+
+.tip-column ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.tip-column li {
+  font-size: var(--fs-small);
+  color: var(--clr-text-muted);
+  padding-left: 1.2em;
+  position: relative;
+}
+
+.tip-column li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+/* Myths vs Facts */
+.myths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.flip-card {
+  perspective: 1000px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.flip-front {
+  background: linear-gradient(135deg, hsl(0, 70%, 95%), hsl(0, 50%, 90%));
+  border: 1px solid hsl(0, 50%, 85%);
+}
+
+.flip-front .myth-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+.flip-front p { font-weight: 600; color: hsl(0, 60%, 40%); }
+.flip-front .flip-hint {
+  font-size: var(--fs-xs);
+  color: var(--clr-text-muted);
+  margin-top: var(--space-sm);
+}
+
+.flip-back {
+  background: linear-gradient(135deg, hsl(145, 50%, 93%), hsl(145, 40%, 88%));
+  border: 1px solid hsl(145, 40%, 80%);
+  transform: rotateY(180deg);
+}
+
+.flip-back .fact-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
+.flip-back p { font-weight: 600; color: hsl(145, 50%, 30%); }
+
+/* CTA section */
+.edu-cta {
+  text-align: center;
+  padding: var(--space-3xl) 0;
+  background: var(--grad-warm);
+}
+
+.edu-cta h2 { margin-bottom: var(--space-md); }
+.edu-cta p { max-width: 500px; margin: 0 auto var(--space-xl); }
+
+.pulse-btn {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pcos-explain { grid-template-columns: 1fr; text-align: center; }
+  .pcos-explain-text .lead { border-left: none; padding-left: 0; border-top: 3px solid var(--clr-primary); padding-top: var(--space-md); }
+  .tips-grid { grid-template-columns: 1fr; }
+  .edu-nav-dots { display: none; }
+  .flow-diagram { flex-direction: column; }
+}

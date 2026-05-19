@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check Your Risk — Sakhi PCOS Assessment</title>
+  <meta name="description" content="Take Sakhi's research-based PCOS risk assessment. Answer questions about symptoms, lifestyle, and habits to get a personalized risk breakdown.">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/questionnaire.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">🌸 Sakhi <span class="logo-devanagari">सखी</span></a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="understand.html" class="nav-link">Understand Your Body</a>
+        <a href="questionnaire.html" class="nav-link active">Check Your Risk</a>
+        <a href="about.html" class="nav-link">About Pi</a>
+      </div>
+      <div class="nav-hamburger" id="nav-hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- Quiz -->
+  <main class="quiz-page">
+    <div class="container">
+      <div class="quiz-progress" id="quiz-progress">
+        <span class="quiz-progress-label">Step 1 of 6</span>
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-fill"></div>
+        </div>
+      </div>
+      <div id="quiz-container">
+        <!-- Rendered by questionnaire.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:none;">
+        <span>© 2026 Sakhi by Pi. Made with <span class="footer-bottom-heart">♥</span> for every woman.</span>
+        <span>Not a medical tool. Consult a healthcare professional.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/cursor.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/questionnaire.js"></script>
+</body>
+</html>
