@@ -1,0 +1,326 @@
+/* SAKHI — Questionnaire Page (questionnaire.css) */
+
+.quiz-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--clr-bg) 0%, var(--clr-bg-alt) 100%);
+  padding-top: 100px;
+  padding-bottom: var(--space-3xl);
+}
+
+/* Progress */
+.quiz-progress {
+  max-width: 600px;
+  margin: 0 auto var(--space-2xl);
+  text-align: center;
+}
+
+.quiz-progress-label {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.quiz-progress-track {
+  width: 100%;
+  height: 8px;
+  background: var(--clr-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--grad-accent);
+  border-radius: var(--radius-full);
+  transition: width 0.6s var(--ease-out);
+  width: 16.66%;
+}
+
+/* Step */
+.quiz-step {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.quiz-step-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.quiz-emoji {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+.quiz-step-header h2 {
+  margin-bottom: var(--space-xs);
+}
+
+.quiz-step-header p {
+  color: var(--clr-text-muted);
+}
+
+/* Question */
+.quiz-question {
+  margin-bottom: var(--space-2xl);
+}
+
+.quiz-question-text {
+  font-size: var(--fs-h3);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+}
+
+.quiz-hint {
+  font-size: var(--fs-small);
+  color: var(--clr-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+/* Option cards */
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-sm);
+}
+
+.option-card {
+  background: var(--clr-surface);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-sm);
+  font-family: var(--ff-heading);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--clr-text);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--tr-fast), background var(--tr-fast), transform var(--tr-fast), box-shadow var(--tr-fast);
+}
+
+.option-card:hover {
+  border-color: var(--clr-primary-light);
+  background: hsla(330, 65%, 55%, 0.04);
+  transform: translateY(-2px);
+}
+
+.option-card.selected {
+  border-color: var(--clr-primary);
+  background: hsla(330, 65%, 55%, 0.08);
+  color: var(--clr-primary-dark);
+  box-shadow: 0 0 0 3px var(--clr-primary-glow);
+  transform: scale(1.02);
+}
+
+/* BMI Calculator */
+.bmi-calculator {
+  margin-bottom: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.bmi-label {
+  font-family: var(--ff-heading);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  color: var(--clr-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.bmi-inputs {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.bmi-field {
+  flex: 1;
+  min-width: 120px;
+}
+
+.bmi-field label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  margin-bottom: 4px;
+}
+
+.bmi-field input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface);
+  transition: border-color var(--tr-fast);
+}
+
+.bmi-field input:focus {
+  outline: none;
+  border-color: var(--clr-primary);
+}
+
+.bmi-result {
+  margin-top: var(--space-sm);
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+/* Quiz navigation */
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--clr-border);
+}
+
+/* Shake animation for unanswered */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+/* Results */
+.results-container {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.results-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.results-header h2 {
+  margin-bottom: var(--space-xl);
+}
+
+.results-score-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 6px solid var(--score-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-lg);
+  box-shadow: 0 0 40px hsla(330, 65%, 55%, 0.1);
+}
+
+.results-pct {
+  font-family: var(--ff-heading);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--clr-text);
+}
+
+.results-risk {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.results-advice {
+  max-width: 500px;
+  margin: 0 auto;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--clr-text-muted);
+}
+
+/* Breakdown */
+.results-breakdown {
+  background: var(--clr-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+
+.results-breakdown h3 {
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.result-category-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 50px;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.result-cat-label {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.result-bar-track {
+  height: 10px;
+  background: var(--clr-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.result-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1s var(--ease-out);
+}
+
+.result-cat-pct {
+  font-family: var(--ff-heading);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  text-align: right;
+}
+
+/* Actions */
+.results-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+}
+
+.results-disclaimer {
+  background: hsla(40, 90%, 50%, 0.08);
+  border: 1px solid hsla(40, 90%, 50%, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  text-align: left;
+}
+
+.results-disclaimer p {
+  font-size: var(--fs-small);
+  color: var(--clr-text);
+}
+
+@media (max-width: 600px) {
+  .result-category-row {
+    grid-template-columns: 1fr 50px;
+  }
+  .result-cat-label {
+    grid-column: 1 / -1;
+  }
+  .bmi-inputs { flex-direction: column; }
+}

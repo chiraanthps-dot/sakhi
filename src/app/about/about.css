@@ -1,0 +1,108 @@
+/* SAKHI — About Page (about.css) */
+
+.about-page { background: var(--clr-bg); }
+
+.about-hero {
+  position: relative;
+  padding: 140px 0 var(--space-3xl);
+  text-align: center;
+  background: linear-gradient(160deg, hsl(330, 30%, 97%), hsl(270, 25%, 93%));
+  overflow: hidden;
+}
+
+.about-hero .pi-logo {
+  font-family: var(--ff-heading);
+  font-size: 5rem;
+  font-weight: 800;
+  background: var(--grad-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-sm);
+  display: inline-block;
+}
+
+.about-hero .pi-symbol {
+  font-size: 6rem;
+  display: block;
+  margin-bottom: var(--space-sm);
+  color: var(--clr-primary);
+  opacity: 0.15;
+}
+
+.about-hero h1 { margin-bottom: var(--space-md); }
+.about-hero p { max-width: 600px; margin: 0 auto; }
+
+/* Mission */
+.mission-section { padding: var(--space-3xl) 0; }
+
+.mission-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.mission-content blockquote {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--clr-text);
+  border-left: 4px solid var(--clr-primary);
+  padding-left: var(--space-xl);
+  text-align: left;
+  margin: var(--space-2xl) 0;
+  line-height: 1.6;
+}
+
+/* Values */
+.values-section {
+  padding: var(--space-3xl) 0;
+  background: var(--clr-bg-alt);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.value-card {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+.value-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.value-card h3 { margin-bottom: var(--space-sm); }
+
+/* Closing */
+.closing-section {
+  padding: var(--space-3xl) 0;
+  text-align: center;
+}
+
+.closing-message {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.closing-message h2 { margin-bottom: var(--space-md); }
+
+.closing-message p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: var(--space-xl);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .values-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .about-hero .pi-logo { font-size: 3.5rem; }
+}
