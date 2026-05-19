@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./questionnaire.css";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useToast } from "@/components/Toast";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
+import confetti from "canvas-confetti";
+import PageTransition from "@/components/PageTransition";
+import { motion, AnimatePresence } from "framer-motion";
 
 const quizData = [
   {
@@ -138,6 +144,8 @@ const categoryWeights: { [key: string]: number } = {
 };
 
 export default function Questionnaire() {
+  const { toast } = useToast();
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: number }>({});
   const [bmiWeight, setBmiWeight] = useState("");
@@ -147,8 +155,59 @@ export default function Questionnaire() {
   const [showResults, setShowResults] = useState(false);
   const [shareText, setShareText] = useState("📤 Share with Doctor");
 
+  // Save results automatically if user is authenticated
+  useEffect(() => {
+    if (showResults && user) {
+      const { overallPct, riskLevel, categoryScores } = getResults();
+      const simplifiedScores = Object.keys(categoryScores).reduce((acc: any, key) => {
+        acc[key] = categoryScores[key].pct;
+        return acc;
+      }, {});
+
+      supabase.from("quiz_results").insert({
+        user_id: user.id,
+        overall_score: overallPct,
+        risk_level: riskLevel,
+        category_scores: simplifiedScores
+      }).then(({ error }) => {
+        if (!error) {
+          toast("Results Saved", "Successfully saved to your profile history.", "success");
+        } else {
+          console.error("Failed to save results:", error);
+        }
+      });
+    }
+  }, [showResults, user]);
+
   // Re-run scroll animations whenever the step changes or results show
   useScrollReveal([currentStep, showResults]);
+
+  // Confetti effect on results mount
+  useEffect(() => {
+    if (showResults) {
+      const duration = 3 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+      const randomInRange = (min: number, max: number) => {
+        return Math.random() * (max - min) + min;
+      };
+
+      const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+        confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+      }, 250);
+
+      return () => clearInterval(interval);
+    }
+  }, [showResults]);
 
   const selectOption = (questionId: string, value: number) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
@@ -188,6 +247,7 @@ export default function Questionnaire() {
     const category = quizData[currentStep];
     const unanswered = category.questions.filter(q => answers[q.id] === undefined);
     if (unanswered.length > 0) {
+      toast("Questions Unanswered", "Please select an answer for all questions in this category.", "error");
       const newShakes = { ...shakingQuestions };
       unanswered.forEach(q => {
         newShakes[q.id] = true;
@@ -310,14 +370,22 @@ export default function Questionnaire() {
     }
   };
 
+  const handleWhatsAppShare = () => {
+    const { overallPct, riskLevel } = getResults();
+    const text = `🌸 I checked my PCOS risk on Sakhi! My risk assessment is ${overallPct}% (${riskLevel} Risk).\n⚠️ This is not a medical diagnosis.\n🔗 Check your risk too: ${window.location.href}`;
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+  };
+
   const fallbackCopy = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setShareText("✅ Copied to Clipboard!");
+      toast("Results Copied", "Your risk assessment has been copied to your clipboard.", "success");
       setTimeout(() => {
         setShareText("📤 Share with Doctor");
       }, 2500);
     }).catch(() => {
-      alert("Could not copy automatically. Here are the results:\n\n" + text);
+      toast("Copy Failed", "Please copy the text manually.", "error");
     });
   };
 
@@ -328,14 +396,36 @@ export default function Questionnaire() {
     const { overallPct, riskLevel, riskColor, riskAdvice, categoryScores } = getResults();
 
     return (
-      <main className="quiz-page">
-        <div className="container">
+      <PageTransition>
+        <main className="quiz-page">
+          <div className="container">
           <div className="results-container reveal">
             <div className="results-header">
               <h2>Your Results</h2>
-              <div className="results-score-circle" style={{ borderColor: riskColor } as React.CSSProperties}>
-                <span className="results-pct">{overallPct}%</span>
-                <span className="results-risk" style={{ color: riskColor }}>{riskLevel} Risk</span>
+              <div className="results-score-circle">
+                <svg width="160" height="160" viewBox="0 0 160 160" className="results-score-svg">
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    className="results-score-bg"
+                  />
+                  <circle
+                    cx="80"
+                    cy="80"
+                    r="70"
+                    className="results-score-progress"
+                    style={{
+                      stroke: riskColor,
+                      strokeDasharray: 440,
+                      strokeDashoffset: 440 - (440 * overallPct) / 100
+                    }}
+                  />
+                </svg>
+                <div className="results-score-text">
+                  <span className="results-pct">{overallPct}%</span>
+                  <span className="results-risk" style={{ color: riskColor }}>{riskLevel} Risk</span>
+                </div>
               </div>
               <p className="results-advice">{riskAdvice}</p>
             </div>
@@ -362,28 +452,58 @@ export default function Questionnaire() {
             <div className="results-actions reveal">
               <Link href="/understand" className="btn btn-primary btn-lg">Learn About PCOS →</Link>
               <button className="btn btn-secondary btn-lg" onClick={handleShare}>{shareText}</button>
+              <button className="btn btn-secondary btn-lg" onClick={handleWhatsAppShare}>💬 WhatsApp Share</button>
               <button className="btn btn-secondary" onClick={handleRestart}>↻ Retake Quiz</button>
             </div>
+            {!user && (
+              <div style={{
+                background: "hsla(330, 65%, 55%, 0.05)",
+                border: "1px solid hsla(330, 65%, 55%, 0.2)",
+                borderRadius: "var(--radius-md)",
+                padding: "var(--space-md) var(--space-lg)",
+                marginBottom: "var(--space-xl)",
+                fontSize: "var(--fs-small)",
+                color: "var(--clr-text)",
+                textAlign: "center"
+              }} className="reveal">
+                💡 <strong>Want to save these results?</strong>{" "}
+                <Link href="/auth" style={{ color: "var(--clr-primary)", fontWeight: 600, textDecoration: "underline" }}>
+                  Sign in or create an account
+                </Link>{" "}
+                to save this assessment to your personal health timeline!
+              </div>
+            )}
             <div className="results-disclaimer reveal">
               <p>⚠️ <strong>Disclaimer:</strong> This assessment is for awareness purposes only and does not constitute a medical diagnosis. Please consult a qualified healthcare professional for proper evaluation and treatment.</p>
             </div>
           </div>
         </div>
       </main>
+    </PageTransition>
     );
   }
 
   return (
-    <main className="quiz-page">
-      <div className="container">
+    <PageTransition>
+      <main className="quiz-page">
+        <div className="container">
         <div className="quiz-progress">
           <span className="quiz-progress-label">Step {currentStep + 1} of {quizData.length}</span>
           <div className="quiz-progress-track">
             <div className="quiz-progress-fill" style={{ width: `${progressPct}%` }}></div>
           </div>
         </div>
-        <div id="quiz-container">
-          <div className="quiz-step" id={`step-${currentStep}`}>
+        <div id="quiz-container" style={{ position: "relative", overflow: "hidden" }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 25 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -25 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="quiz-step"
+              id={`step-${currentStep}`}
+            >
             <div className="quiz-step-header reveal">
               <span className="quiz-emoji">{currentCategory.emoji}</span>
               <h2>{currentCategory.title}</h2>
@@ -458,9 +578,11 @@ export default function Questionnaire() {
                 <button className="btn btn-accent btn-lg" id="results-btn" onClick={handleShowResults}>See My Results ✨</button>
               )}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </main>
+      </div>
+      </main>
+    </PageTransition>
   );
 }

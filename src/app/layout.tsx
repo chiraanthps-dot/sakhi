@@ -3,6 +3,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CustomCursor from "@/components/CustomCursor";
+import { ToastProvider } from "@/components/Toast";
+import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata: Metadata = {
   title: "Sakhi — Your Companion in Understanding PCOS",
@@ -20,10 +23,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <Footer />
+        <a href="#main-content" className="skip-link">Skip to main content</a>
+        <AuthProvider>
+          <LanguageProvider>
+            <ToastProvider>
+              <CustomCursor />
+              <Navbar />
+              <div id="main-content">
+                {children}
+              </div>
+              <Footer />
+            </ToastProvider>
+          </LanguageProvider>
+        </AuthProvider>
       </body>
     </html>
   );

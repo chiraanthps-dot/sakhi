@@ -324,3 +324,46 @@
   }
   .bmi-inputs { flex-direction: column; }
 }
+
+/* Circular progress ring overrides */
+.results-score-circle {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.results-score-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.results-score-bg {
+  fill: none;
+  stroke: var(--clr-border);
+  stroke-width: 8px;
+}
+
+.results-score-progress {
+  fill: none;
+  stroke-width: 8px;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s var(--ease-out);
+}
+
+.results-score-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}

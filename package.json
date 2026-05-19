@@ -1,5 +1,5 @@
 {
-  "name": "temp-next-app",
+  "name": "sakhi-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,11 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.106.0",
+    "canvas-confetti": "^1.9.4",
+    "framer-motion": "^12.39.0",
+    "lucide-react": "^1.16.0",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import "./understand.css";
 import FlipCard from "@/components/FlipCard";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import PageTransition from "@/components/PageTransition";
 
 const sectionsInfo = [
   { id: "what-is-pcos", title: "What is PCOS?" },
@@ -53,7 +54,8 @@ export default function Understand() {
   };
 
   return (
-    <main className="edu-page">
+    <PageTransition>
+      <main className="edu-page">
       {/* Reading progress bar */}
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progressWidth}%` }}></div>
@@ -320,5 +322,6 @@ export default function Understand() {
         </div>
       </section>
     </main>
+  </PageTransition>
   );
 }

@@ -3,8 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ThemeToggle from "./ThemeToggle";
+import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
+  const { user } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -47,37 +52,73 @@ export default function Navbar() {
             🌸 Sakhi <span className="logo-devanagari">सखी</span>
           </Link>
           <div className={`nav-links ${menuOpen ? "open" : ""}`} id="nav-links">
-            <Link
+             <Link
               href="/"
               className={`nav-link ${pathname === "/" ? "active" : ""}`}
               onClick={closeMenu}
             >
-              Home
+              {t("nav_home")}
             </Link>
             <Link
               href="/understand"
               className={`nav-link ${pathname === "/understand" ? "active" : ""}`}
               onClick={closeMenu}
             >
-              Understand Your Body
+              {t("nav_understand")}
             </Link>
             <Link
-              href="/questionnaire"
-              className={`nav-link ${pathname === "/questionnaire" ? "active" : ""}`}
+              href="/tracker"
+              className={`nav-link ${pathname === "/tracker" ? "active" : ""}`}
               onClick={closeMenu}
             >
-              Check Your Risk
+              {t("nav_tracker")}
             </Link>
             <Link
               href="/about"
               className={`nav-link ${pathname === "/about" ? "active" : ""}`}
               onClick={closeMenu}
             >
-              About Pi
+              {t("nav_about")}
             </Link>
+            {user ? (
+              <Link
+                href="/profile"
+                className={`nav-link ${pathname === "/profile" ? "active" : ""}`}
+                onClick={closeMenu}
+              >
+                {t("nav_profile")}
+              </Link>
+            ) : (
+              <Link
+                href="/auth"
+                className={`nav-link ${pathname === "/auth" ? "active" : ""}`}
+                onClick={closeMenu}
+              >
+                {t("nav_signin")}
+              </Link>
+            )}
             <Link href="/questionnaire" className="nav-cta" onClick={closeMenu}>
-              Take the Quiz →
+              {t("nav_quiz")}
             </Link>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "12px" }}>
+              <button
+                onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+                style={{
+                  background: "transparent",
+                  border: "1px solid var(--clr-border)",
+                  color: "var(--clr-text)",
+                  padding: "4px 8px",
+                  borderRadius: "var(--radius-sm)",
+                  fontSize: "var(--fs-xs)",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all var(--tr-fast)"
+                }}
+              >
+                {language === "en" ? "हिन्दी" : "EN"}
+              </button>
+              <ThemeToggle />
+            </div>
           </div>
           <div
             className={`nav-hamburger ${menuOpen ? "open" : ""}`}

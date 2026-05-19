@@ -1,15 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import "./page.css";
-import Counter from "@/components/Counter";
+import PageTransition from "@/components/PageTransition";
+import { useLanguage } from "@/context/LanguageContext";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import Counter from "@/components/Counter";
 
 export default function Home() {
+  const { t } = useLanguage();
   useScrollReveal();
 
   return (
-    <main>
+    <PageTransition>
       {/* Hero Section */}
       <section className="hero" id="hero">
         <div className="hero-bg">
@@ -19,48 +23,41 @@ export default function Home() {
         </div>
         <div className="container">
           <div className="hero-content">
-            <div className="hero-badge">🌿 Trusted by women, built with care</div>
+            <div className="hero-badge">{t("hero_badge")}</div>
             <h1 className="hero-title">
-              Your body speaks.<br />
-              <span className="highlight">Let's learn to listen.</span>
+              {t("hero_title_1")}<br />
+              <span className="highlight">{t("hero_title_2")}</span>
             </h1>
             <p className="hero-subtitle">
-              Sakhi is your companion in understanding PCOS & PCOD. Take a research-based assessment, learn about your body, and discover what you can do — all in one place.
+              {t("hero_subtitle")}
             </p>
             <div className="hero-actions">
-              <Link href="/questionnaire" className="btn btn-primary btn-lg">Check Your Risk →</Link>
-              <Link href="/understand" className="btn btn-secondary btn-lg">Learn About PCOS</Link>
+              <Link href="/questionnaire" className="btn btn-primary btn-lg">{t("btn_check_risk")}</Link>
+              <Link href="/understand" className="btn btn-secondary btn-lg">{t("btn_learn_pcos")}</Link>
             </div>
           </div>
           <div className="hero-visual">
-            <div className="hero-illustration-placeholder" style={{
-              width: '100%',
-              maxWidth: '440px',
-              aspectRatio: '1',
-              borderRadius: 'var(--radius-xl)',
-              background: 'var(--grad-warm)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              gap: '1rem',
-            }}>
-              <span style={{ fontSize: '6rem' }}>🌸</span>
-              <span style={{
-                fontFamily: 'var(--ff-heading)',
-                fontSize: '2.5rem',
-                fontWeight: 800,
-                background: 'var(--grad-accent)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>Sakhi</span>
-              <span style={{ fontFamily: 'var(--ff-heading)', fontSize: '1.2rem', color: 'var(--clr-text-muted)' }}>सखी — Your Companion</span>
-            </div>
+            <Image
+              src="/hero-wellness.png"
+              alt="Sakhi women wellness illustration"
+              width={440}
+              height={440}
+              style={{
+                borderRadius: "var(--radius-xl)",
+                boxShadow: "var(--shadow-lg)",
+                width: "100%",
+                maxWidth: "440px",
+                height: "auto",
+                aspectRatio: "1",
+                objectFit: "cover"
+              }}
+              priority
+            />
             <div className="hero-float-card card-1">
-              💜 1 in 10 women affected
+              {t("stat_1")}
             </div>
             <div className="hero-float-card card-2">
-              ✨ Early awareness helps
+              {t("stat_2")}
             </div>
           </div>
         </div>
@@ -126,6 +123,6 @@ export default function Home() {
           <Link href="/questionnaire" className="btn btn-lg">Take the Quiz Now 🌸</Link>
         </div>
       </section>
-    </main>
+    </PageTransition>
   );
 }

@@ -3,12 +3,14 @@
 import Link from "next/link";
 import "./about.css";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import PageTransition from "@/components/PageTransition";
 
 export default function About() {
   useScrollReveal();
 
   return (
-    <main className="about-page">
+    <PageTransition>
+      <main className="about-page">
       {/* Hero */}
       <section className="about-hero">
         <div className="blob blob-primary" style={{ width: '300px', height: '300px', top: '-60px', left: '-80px' }}></div>
@@ -83,5 +85,6 @@ export default function About() {
         </div>
       </section>
     </main>
+  </PageTransition>
   );
 }
