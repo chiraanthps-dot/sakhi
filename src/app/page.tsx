@@ -8,8 +8,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import Counter from "@/components/Counter";
 
+import { useAuth } from "@/context/AuthContext";
+
 export default function Home() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   useScrollReveal();
 
   return (
@@ -23,7 +26,9 @@ export default function Home() {
         </div>
         <div className="container">
           <div className="hero-content">
-            <div className="hero-badge">{t("hero_badge")}</div>
+            <div className="hero-badge">
+              {user ? `🌸 Welcome, ${user.user_metadata.full_name || "Friend"}` : t("hero_badge")}
+            </div>
             <h1 className="hero-title">
               {t("hero_title_1")}<br />
               <span className="highlight">{t("hero_title_2")}</span>

@@ -41,19 +41,30 @@ export default function TrackerPage() {
     if (!user) return;
     setFetching(true);
     try {
-      const { data, error } = await supabase
-        .from("cycle_logs")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("start_date", { ascending: false });
+      if (user.isLocal) {
+        const stored = localStorage.getItem("sakhi-cycle-logs");
+        const parsed = stored ? JSON.parse(stored) : [];
+        setLogs(parsed);
+        if (parsed.length > 0) {
+          setStartDate(parsed[0].start_date);
+          setCycleLength(String(parsed[0].cycle_length));
+          setPeriodDays(String(parsed[0].period_days));
+        }
+      } else {
+        const { data, error } = await supabase
+          .from("cycle_logs")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("start_date", { ascending: false });
 
-      if (error) throw error;
-      setLogs(data || []);
-      if (data && data.length > 0) {
-        // Pre-fill fields with latest settings
-        setStartDate(data[0].start_date);
-        setCycleLength(String(data[0].cycle_length));
-        setPeriodDays(String(data[0].period_days));
+        if (error) throw error;
+        setLogs(data || []);
+        if (data && data.length > 0) {
+          // Pre-fill fields with latest settings
+          setStartDate(data[0].start_date);
+          setCycleLength(String(data[0].cycle_length));
+          setPeriodDays(String(data[0].period_days));
+        }
       }
     } catch (err: any) {
       console.error("Error fetching cycle logs:", err);
@@ -91,16 +102,28 @@ export default function TrackerPage() {
 
     try {
       if (user) {
-        const { error } = await supabase
-          .from("cycle_logs")
-          .insert({
-            user_id: user.id,
+        if (user.isLocal) {
+          const mockLog: CycleLog = {
+            id: Math.random().toString(),
             ...payload,
-          });
+            created_at: new Date().toISOString(),
+          };
+          const updatedLogs = [mockLog, ...logs];
+          localStorage.setItem("sakhi-cycle-logs", JSON.stringify(updatedLogs));
+          setLogs(updatedLogs);
+          toast("Log Saved", "Successfully saved details to your timeline.", "success");
+        } else {
+          const { error } = await supabase
+            .from("cycle_logs")
+            .insert({
+              user_id: user.id,
+              ...payload,
+            });
 
-        if (error) throw error;
-        toast("Log Saved", "Successfully saved details to your timeline.", "success");
-        fetchLogs();
+          if (error) throw error;
+          toast("Log Saved", "Successfully saved details to your timeline.", "success");
+          fetchLogs();
+        }
       } else {
         // Guest mode fallback
         const mockLog: CycleLog = {
@@ -122,14 +145,21 @@ export default function TrackerPage() {
     if (!confirm("Remove this entry from your timeline?")) return;
     try {
       if (user) {
-        const { error } = await supabase
-          .from("cycle_logs")
-          .delete()
-          .eq("id", id);
+        if (user.isLocal) {
+          const updatedLogs = logs.filter((l) => l.id !== id);
+          localStorage.setItem("sakhi-cycle-logs", JSON.stringify(updatedLogs));
+          setLogs(updatedLogs);
+          toast("Entry Removed", "Log entry deleted successfully.", "success");
+        } else {
+          const { error } = await supabase
+            .from("cycle_logs")
+            .delete()
+            .eq("id", id);
 
-        if (error) throw error;
-        toast("Entry Removed", "Log entry deleted successfully.", "success");
-        fetchLogs();
+          if (error) throw error;
+          toast("Entry Removed", "Log entry deleted successfully.", "success");
+          fetchLogs();
+        }
       } else {
         setLogs(logs.filter((l) => l.id !== id));
         toast("Entry Removed", "Log entry deleted locally.", "info");

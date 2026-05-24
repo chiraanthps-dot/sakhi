@@ -164,18 +164,33 @@ export default function Questionnaire() {
         return acc;
       }, {});
 
-      supabase.from("quiz_results").insert({
-        user_id: user.id,
-        overall_score: overallPct,
-        risk_level: riskLevel,
-        category_scores: simplifiedScores
-      }).then(({ error }) => {
-        if (!error) {
-          toast("Results Saved", "Successfully saved to your profile history.", "success");
-        } else {
-          console.error("Failed to save results:", error);
-        }
-      });
+      if (user.isLocal) {
+        const stored = localStorage.getItem("sakhi-quiz-results");
+        const parsed = stored ? JSON.parse(stored) : [];
+        const newResult = {
+          id: Math.random().toString(),
+          overall_score: overallPct,
+          risk_level: riskLevel,
+          category_scores: simplifiedScores,
+          created_at: new Date().toISOString()
+        };
+        const updated = [newResult, ...parsed];
+        localStorage.setItem("sakhi-quiz-results", JSON.stringify(updated));
+        toast("Results Saved", "Successfully saved to your profile history.", "success");
+      } else {
+        supabase.from("quiz_results").insert({
+          user_id: user.id,
+          overall_score: overallPct,
+          risk_level: riskLevel,
+          category_scores: simplifiedScores
+        }).then(({ error }) => {
+          if (!error) {
+            toast("Results Saved", "Successfully saved to your profile history.", "success");
+          } else {
+            console.error("Failed to save results:", error);
+          }
+        });
+      }
     }
   }, [showResults, user]);
 

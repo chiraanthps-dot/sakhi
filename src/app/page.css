@@ -13,8 +13,9 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, hsl(330, 30%, 97%) 0%, hsl(270, 25%, 93%) 40%, hsl(330, 40%, 92%) 100%);
+  background: var(--grad-hero-bg);
   z-index: 0;
+  transition: background var(--tr-normal);
 }
 
 .hero-blob-1 {
@@ -138,10 +139,10 @@
   animation-delay: 1.5s;
 }
 
-/* --- Stats Section --- */
 .stats {
-  background: var(--clr-text);
+  background: var(--clr-stats-bg);
   padding: var(--space-2xl) 0;
+  transition: background-color var(--tr-normal);
 }
 
 .stats-grid {

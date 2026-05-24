@@ -101,22 +101,6 @@ export default function Navbar() {
               {t("nav_quiz")}
             </Link>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "12px" }}>
-              <button
-                onClick={() => setLanguage(language === "en" ? "hi" : "en")}
-                style={{
-                  background: "transparent",
-                  border: "1px solid var(--clr-border)",
-                  color: "var(--clr-text)",
-                  padding: "4px 8px",
-                  borderRadius: "var(--radius-sm)",
-                  fontSize: "var(--fs-xs)",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  transition: "all var(--tr-fast)"
-                }}
-              >
-                {language === "en" ? "हिन्दी" : "EN"}
-              </button>
               <ThemeToggle />
             </div>
           </div>

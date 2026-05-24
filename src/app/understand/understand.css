@@ -9,8 +9,9 @@
   position: relative;
   padding: 140px 0 var(--space-3xl);
   text-align: center;
-  background: linear-gradient(160deg, hsl(330, 30%, 97%), hsl(270, 25%, 93%));
+  background: var(--grad-hero-bg);
   overflow: hidden;
+  transition: background var(--tr-normal);
 }
 
 .edu-hero h1 {
@@ -225,12 +226,13 @@
 }
 
 .flip-front {
-  background: linear-gradient(135deg, hsl(0, 70%, 95%), hsl(0, 50%, 90%));
-  border: 1px solid hsl(0, 50%, 85%);
+  background: var(--clr-flip-front-bg);
+  border: 1px solid var(--clr-flip-front-border);
+  transition: background var(--tr-normal), border var(--tr-normal);
 }
 
 .flip-front .myth-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
-.flip-front p { font-weight: 600; color: hsl(0, 60%, 40%); }
+.flip-front p { font-weight: 600; color: var(--clr-flip-front-text); transition: color var(--tr-normal); }
 .flip-front .flip-hint {
   font-size: var(--fs-xs);
   color: var(--clr-text-muted);
@@ -238,13 +240,14 @@
 }
 
 .flip-back {
-  background: linear-gradient(135deg, hsl(145, 50%, 93%), hsl(145, 40%, 88%));
-  border: 1px solid hsl(145, 40%, 80%);
+  background: var(--clr-flip-back-bg);
+  border: 1px solid var(--clr-flip-back-border);
   transform: rotateY(180deg);
+  transition: background var(--tr-normal), border var(--tr-normal);
 }
 
 .flip-back .fact-icon { font-size: 2rem; margin-bottom: var(--space-sm); }
-.flip-back p { font-weight: 600; color: hsl(145, 50%, 30%); }
+.flip-back p { font-weight: 600; color: var(--clr-flip-back-text); transition: color var(--tr-normal); }
 
 /* CTA section */
 .edu-cta {

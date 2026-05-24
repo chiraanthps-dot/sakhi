@@ -8,6 +8,7 @@ import { useToast } from "@/components/Toast";
 import Link from "next/link";
 import { LogOut, Trash2, Calendar, Award, User, RefreshCw } from "lucide-react";
 import PageTransition from "@/components/PageTransition";
+import DailyCheckIn from "@/components/DailyCheckIn";
 
 interface QuizResult {
   id: string;
@@ -29,17 +30,21 @@ export default function ProfilePage() {
     if (!user) return;
     setFetching(true);
     try {
-      const { data, error } = await supabase
-        .from("quiz_results")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
+      if (user.isLocal) {
+        const stored = localStorage.getItem("sakhi-quiz-results");
+        setAttempts(stored ? JSON.parse(stored) : []);
+      } else {
+        const { data, error } = await supabase
+          .from("quiz_results")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      setAttempts(data || []);
+        if (error) throw error;
+        setAttempts(data || []);
+      }
     } catch (err: any) {
       console.error("Error fetching results:", err);
-      // Suppress errors during development if table doesn't exist yet
     } finally {
       setFetching(false);
     }
@@ -70,15 +75,20 @@ export default function ProfilePage() {
     }
 
     try {
-      const { error } = await supabase
-        .from("quiz_results")
-        .delete()
-        .eq("user_id", user.id);
+      if (user.isLocal) {
+        localStorage.removeItem("sakhi-quiz-results");
+        setAttempts([]);
+        toast("History Deleted", "All your assessment records have been deleted.", "success");
+      } else {
+        const { error } = await supabase
+          .from("quiz_results")
+          .delete()
+          .eq("user_id", user.id);
 
-      if (error) throw error;
-
-      setAttempts([]);
-      toast("History Deleted", "All your assessment records have been deleted.", "success");
+        if (error) throw error;
+        setAttempts([]);
+        toast("History Deleted", "All your assessment records have been deleted.", "success");
+      }
     } catch (err: any) {
       toast("Error", err.message || "Failed to delete history.", "error");
     }
@@ -222,6 +232,9 @@ export default function ProfilePage() {
             </Link>
           </div>
         </div>
+
+        {/* Daily Wellness Check-In panel */}
+        <DailyCheckIn />
 
         {/* History Graph (Show only if attempts exist) */}
         {attempts.length > 0 && (
